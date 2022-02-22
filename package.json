@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "lint": "eslint . --ext .js,.ts",
+    "lint": "eslint ./src --ext .ts",
     "test": "jest --passWithNoTests"
   },
   "devDependencies": {
