@@ -1,3 +1,4 @@
+import { StatusCodes } from 'http-status-codes';
 import MissingParamError from '../errors/missing-param-error';
 import SignUpController from './signup';
 
@@ -11,7 +12,7 @@ describe('SignUpController', () => {
       },
     };
     const httpResponse = sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(httpResponse.body).toEqual(new MissingParamError('name'));
   });
 
@@ -24,7 +25,7 @@ describe('SignUpController', () => {
       },
     };
     const httpResponse = sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(httpResponse.body).toEqual(new MissingParamError('email'));
   });
 
@@ -37,7 +38,7 @@ describe('SignUpController', () => {
       },
     };
     const httpResponse = sut.handle(httpRequest);
-    expect(httpResponse.statusCode).toBe(400);
+    expect(httpResponse.statusCode).toBe(StatusCodes.BAD_REQUEST);
     expect(httpResponse.body).toEqual(new MissingParamError('password'));
   });
 });
