@@ -1,3 +1,4 @@
+import faker from '@faker-js/faker';
 import isEmail from 'validator/lib/isEmail';
 import EmailValidatorAdapter from './email-validator-adapter';
 
@@ -9,12 +10,16 @@ describe('EmailValidatorAdapter', () => {
   it('should return false when email is invalid', () => {
     mockedIsEmail.mockReturnValue(false);
     const sut = new EmailValidatorAdapter();
-    expect(sut.isValid('invalid_email')).toBe(false);
+    const invalidEmail = 'invalid_email';
+    expect(sut.isValid(invalidEmail)).toBe(false);
+    expect(mockedIsEmail).toHaveBeenCalledWith(invalidEmail);
   });
 
   it('should return truen when email is valid', () => {
     mockedIsEmail.mockReturnValue(true);
     const sut = new EmailValidatorAdapter();
-    expect(sut.isValid('valid_email@email.com')).toBe(true);
+    const validEmail = faker.internet.email();
+    expect(sut.isValid(validEmail)).toBe(true);
+    expect(mockedIsEmail).toHaveBeenCalledWith(validEmail);
   });
 });
