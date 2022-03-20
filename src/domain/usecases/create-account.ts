@@ -1,8 +1,9 @@
-export type CreateAccountModel = {
-  name: string;
-  email: string;
-  password: string;
-};
+import { AccountModel } from '../models/account';
+
+export type CreateAccountModel = Pick<
+  AccountModel,
+  'name' | 'email' | 'password'
+>;
 
 export type CreateAccount = {
   create(createAccountModel: CreateAccountModel);
