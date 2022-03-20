@@ -6,8 +6,8 @@
   "scripts": {
     "prepare": "husky install",
     "lint": "eslint ./src --ext .ts",
-    "test": "jest --passWithNoTests --watch",
-    "test:staged": "jest --passWithNoTests"
+    "test": "jest --watch",
+    "test:staged": "jest"
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
