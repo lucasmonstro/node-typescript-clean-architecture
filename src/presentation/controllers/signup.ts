@@ -1,19 +1,18 @@
+import {
+  CreateAccount,
+  CreateAccountModel,
+} from '../../domain/usecases/create-account';
 import { InvalidParamError, MissingParamError } from '../errors';
-import { badRequest, serverError } from '../helpers/http-helpers';
+import { badRequest, created, serverError } from '../helpers/http-helpers';
 import { EmailValidator, HttpRequest, HttpResponse } from '../protocols';
 
-type SignUpPayload = {
-  name: string;
-  email: string;
-  password: string;
-};
-
 export default class SignUpController {
-  constructor(private emailValidator: EmailValidator) {}
+  constructor(
+    private createAccount: CreateAccount,
+    private emailValidator: EmailValidator,
+  ) {}
 
-  handle(
-    httpRequest: HttpRequest<Partial<SignUpPayload>>,
-  ): HttpResponse<Error> {
+  handle(httpRequest: HttpRequest<CreateAccountModel>): HttpResponse<Error> {
     try {
       const requiredFields = ['name', 'email', 'password'];
       for (const field of requiredFields) {
@@ -26,6 +25,8 @@ export default class SignUpController {
       if (invalidEmail) {
         return badRequest(new InvalidParamError('email'));
       }
+      this.createAccount.create(httpRequest.body);
+      return created();
     } catch (error) {
       return serverError();
     }
