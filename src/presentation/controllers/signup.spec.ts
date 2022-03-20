@@ -4,8 +4,9 @@ import {
   CreateAccountModel,
 } from '../../domain/usecases/create-account';
 import { InvalidParamError, MissingParamError, ServerError } from '../errors';
-import { EmailValidator, HttpRequest } from '../protocols';
+import { HttpRequest } from '../protocols';
 import SignUpController from './signup';
+import { EmailValidator } from './signup-protocols';
 
 type SutTypes = {
   sut: SignUpController;
@@ -86,10 +87,27 @@ describe('SignUpController', () => {
     expect(isValidSpy).toHaveBeenCalledWith(httpRequest.body.email);
   });
 
-  it('should return ServerError when emailValidator throws an exception', () => {
+  it('should return ServerError when email validator throws an exception', () => {
     const { sut, emailValidatorStub } = makeSut();
     jest.spyOn(emailValidatorStub, 'isValid').mockImplementationOnce(() => {
       throw new Error('Cannot validate email');
+    });
+    const httpRequest: HttpRequest<CreateAccountModel> = {
+      body: {
+        name: 'any_name',
+        email: 'any_email',
+        password: 'any_password',
+      },
+    };
+    const httpResponse = sut.handle(httpRequest);
+    expect(httpResponse.statusCode).toBe(StatusCodes.INTERNAL_SERVER_ERROR);
+    expect(httpResponse.body).toEqual(new ServerError());
+  });
+
+  it('should return ServerError when createAccount usecase throws an exception', () => {
+    const { sut, createAccountStub } = makeSut();
+    jest.spyOn(createAccountStub, 'create').mockImplementationOnce(() => {
+      throw new Error('Cannot create account');
     });
     const httpRequest: HttpRequest<CreateAccountModel> = {
       body: {

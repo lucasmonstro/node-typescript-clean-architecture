@@ -4,7 +4,8 @@ import {
 } from '../../domain/usecases/create-account';
 import { InvalidParamError, MissingParamError } from '../errors';
 import { badRequest, created, serverError } from '../helpers/http-helpers';
-import { EmailValidator, HttpRequest, HttpResponse } from '../protocols';
+import { HttpRequest, HttpResponse } from '../protocols';
+import { EmailValidator } from './signup-protocols';
 
 export default class SignUpController {
   constructor(
