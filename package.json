@@ -11,6 +11,7 @@
   },
   "devDependencies": {
     "@commitlint/cli": "^16.2.1",
+    "@faker-js/faker": "^6.0.0",
     "@types/jest": "^27.4.0",
     "@types/node": "^17.0.19",
     "@types/validator": "^13.7.1",
