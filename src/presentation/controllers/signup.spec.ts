@@ -1,3 +1,4 @@
+import faker from '@faker-js/faker';
 import { StatusCodes } from 'http-status-codes';
 import {
   CreateAccount,
@@ -36,8 +37,8 @@ describe('SignUpController', () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        email: 'any_email',
-        password: 'any_password',
+        email: faker.internet.email(),
+        password: faker.internet.password(),
       },
     } as HttpRequest<CreateAccountModel>;
     const httpResponse = sut.handle(httpRequest);
@@ -49,8 +50,8 @@ describe('SignUpController', () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        name: 'any_name',
-        password: 'any_password',
+        name: faker.name.findName(),
+        password: faker.internet.password(),
       },
     } as HttpRequest<CreateAccountModel>;
     const httpResponse = sut.handle(httpRequest);
@@ -62,8 +63,8 @@ describe('SignUpController', () => {
     const { sut } = makeSut();
     const httpRequest = {
       body: {
-        name: 'any_name',
-        email: 'any_email',
+        name: faker.name.findName(),
+        email: faker.internet.email(),
       },
     } as HttpRequest<CreateAccountModel>;
     const httpResponse = sut.handle(httpRequest);
@@ -77,9 +78,9 @@ describe('SignUpController', () => {
     isValidSpy.mockReturnValueOnce(false);
     const httpRequest: HttpRequest<CreateAccountModel> = {
       body: {
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password',
+        name: faker.name.findName(),
+        email: 'invalidEmail',
+        password: faker.internet.password(),
       },
     };
     const httpResponse = sut.handle(httpRequest);
@@ -95,9 +96,9 @@ describe('SignUpController', () => {
     });
     const httpRequest: HttpRequest<CreateAccountModel> = {
       body: {
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password',
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
       },
     };
     const httpResponse = sut.handle(httpRequest);
@@ -115,9 +116,9 @@ describe('SignUpController', () => {
     });
     const httpRequest: HttpRequest<CreateAccountModel> = {
       body: {
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password',
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
       },
     };
     const httpResponse = sut.handle(httpRequest);
@@ -133,9 +134,9 @@ describe('SignUpController', () => {
     const createSpy = jest.spyOn(createAccountStub, 'create');
     const httpRequest: HttpRequest<CreateAccountModel> = {
       body: {
-        name: 'any_name',
-        email: 'any_email',
-        password: 'any_password',
+        name: faker.name.findName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
       },
     };
     const httpResponse = sut.handle(httpRequest);
