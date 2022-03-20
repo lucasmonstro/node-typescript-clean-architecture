@@ -3,6 +3,7 @@ import {
   CreateAccount,
   CreateAccountModel,
 } from '../../domain/usecases/create-account';
+import EmailValidatorAdapter from '../../utils/email-validator-adapter';
 import { InvalidParamError, MissingParamError, ServerError } from '../errors';
 import { HttpRequest } from '../protocols';
 import SignUpController from './signup';
@@ -22,7 +23,7 @@ class CreateAccountStub implements CreateAccount {
 
 const makeSut = (): SutTypes => {
   const createAccountStub = new CreateAccountStub();
-  const emailValidatorStub = new EmailValidator();
+  const emailValidatorStub = new EmailValidatorAdapter();
   return {
     sut: new SignUpController(createAccountStub, emailValidatorStub),
     createAccountStub,
@@ -105,7 +106,10 @@ describe('SignUpController', () => {
   });
 
   it('should return ServerError when createAccount usecase throws an exception', () => {
-    const { sut, createAccountStub } = makeSut();
+    const { sut, createAccountStub, emailValidatorStub } = makeSut();
+    jest
+      .spyOn(emailValidatorStub, 'isValid')
+      .mockImplementationOnce(() => true);
     jest.spyOn(createAccountStub, 'create').mockImplementationOnce(() => {
       throw new Error('Cannot create account');
     });
@@ -121,8 +125,11 @@ describe('SignUpController', () => {
     expect(httpResponse.body).toEqual(new ServerError());
   });
 
-  it('should create account', () => {
-    const { sut, createAccountStub } = makeSut();
+  it('should return Created when account is created successfully', () => {
+    const { sut, createAccountStub, emailValidatorStub } = makeSut();
+    jest
+      .spyOn(emailValidatorStub, 'isValid')
+      .mockImplementationOnce(() => true);
     const createSpy = jest.spyOn(createAccountStub, 'create');
     const httpRequest: HttpRequest<CreateAccountModel> = {
       body: {
