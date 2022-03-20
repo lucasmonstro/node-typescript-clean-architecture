@@ -1,8 +1,6 @@
-import MissingParamError from '../errors/missing-param-error';
-import InvalidParamError from '../errors/invalid-param-error';
+import { InvalidParamError, MissingParamError } from '../errors';
 import { badRequest, serverError } from '../helpers/http-helpers';
-import EmailValidator from '../protocols/email-validator';
-import { HttpRequest, HttpResponse } from '../protocols/http';
+import { EmailValidator, HttpRequest, HttpResponse } from '../protocols';
 
 type SignUpPayload = {
   name: string;
@@ -19,8 +17,8 @@ export default class SignUpController {
     try {
       const requiredFields = ['name', 'email', 'password'];
       for (const field of requiredFields) {
-        const isFieldMissing = !httpRequest.body[field];
-        if (isFieldMissing) {
+        const missingField = !httpRequest.body[field];
+        if (missingField) {
           return badRequest(new MissingParamError(field));
         }
       }
