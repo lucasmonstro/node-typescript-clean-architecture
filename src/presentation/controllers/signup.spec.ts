@@ -17,7 +17,9 @@ type SutTypes = {
 };
 
 class CreateAccountStub implements CreateAccount {
-  async create(createAccountModel: CreateAccountModel) {
+  async create(
+    createAccountModel: Parameters<CreateAccount['create']>[0],
+  ): ReturnType<CreateAccount['create']> {
     return createAccountModel;
   }
 }

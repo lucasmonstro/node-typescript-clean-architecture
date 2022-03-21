@@ -1,6 +1,4 @@
 import faker from '@faker-js/faker';
-import { AccountModel } from '../../domain/models/account';
-import { CreateAccountModel } from '../../domain/usecases/create-account';
 import { CreateAccountRepository } from '../protocols/create-account-repository';
 import { Encrypter } from '../protocols/encrypter';
 import DbCreateAccount from './db-create-account';
@@ -20,8 +18,8 @@ const makeSut = (): SutTypes => {
   }
   class CreateAccountRepositoryStub implements CreateAccountRepository {
     async create(
-      createAccountModel: CreateAccountModel,
-    ): Promise<AccountModel> {
+      createAccountModel: Parameters<CreateAccountRepository['create']>[0],
+    ): ReturnType<CreateAccountRepository['create']> {
       return new Promise((resolve) => resolve(createAccountModel));
     }
   }
