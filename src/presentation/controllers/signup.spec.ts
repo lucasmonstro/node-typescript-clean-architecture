@@ -17,7 +17,7 @@ type SutTypes = {
 };
 
 class CreateAccountStub implements CreateAccount {
-  create(createAccountModel: CreateAccountModel) {
+  async create(createAccountModel: CreateAccountModel) {
     return createAccountModel;
   }
 }

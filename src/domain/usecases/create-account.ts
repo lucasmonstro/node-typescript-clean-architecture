@@ -6,5 +6,5 @@ export type CreateAccountModel = Pick<
 >;
 
 export type CreateAccount = {
-  create(createAccountModel: CreateAccountModel);
+  create(createAccountModel: CreateAccountModel): Promise<AccountModel>;
 };
